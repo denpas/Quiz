@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Application <span>QUIZ</span></div>
+    <div class="hdr-teacher hidden" id="hdrTeacher"></div>
+  </header>
+
+  <main>
+    <!-- Choix de l'enseignant (adresse sans enseignant) -->
+    <section class="card hidden" id="viewChoose">
+      <h1>Bienvenue</h1>
+      <p class="lead">Choisissez le quiz de votre enseignant, ou utilisez directement le lien qu'il vous a communiqué.</p>
+      <div class="teacher-list" id="teacherList"></div>
+      <div class="msg warn hidden" id="noTeacher">Aucun quiz n'est disponible pour le moment.</div>
+    </section>
+
+    <!-- Identification de l'étudiant -->
+    <section class="card hidden" id="viewIdent">
+      <h1>Bienvenue</h1>
+      <p class="lead">Renseignez votre identité pour commencer. Les questions s'affichent une par une ; une réponse validée ne peut plus être modifiée. Le quiz ne peut être lancé qu'une seule fois par adresse email.</p>
+      <div class="msg warn hidden" id="noQuiz">Aucun quiz n'est disponible pour le moment. Merci de patienter : l'enseignant va le mettre en ligne.</div>
+      <div class="msg error hidden" id="identErr"></div>
+      <form id="identForm" novalidate autocomplete="on">
+        <div class="row2">
+          <label class="field">Nom
+            <input id="nom" name="family-name" autocomplete="family-name" maxlength="80" required>
+          </label>
+          <label class="field">Prénom
+            <input id="prenom" name="given-name" autocomplete="given-name" maxlength="80" required>
+          </label>
+        </div>
+        <label class="field">Adresse email
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required
+                 placeholder="prenom.nom@exemple.fr" spellcheck="false" autocapitalize="off">
+          <div class="hint" id="emailHint"></div>
+        </label>
+        <button type="submit" id="btnStart" disabled>Commencer le quiz</button>
+      </form>
+    </section>
+
+    <!-- Question -->
+    <section class="quiz-wrap hidden" id="viewQuiz">
+      <div class="card quiz-card">
+        <div class="progress"><span id="progTxt"></span><div class="bar"><i id="progBar"></i></div></div>
+        <div class="msg error hidden" id="quizErr"></div>
+        <p class="enonce" id="enonce"></p>
+        <p class="instr" id="instr"></p>
+        <div id="answerBox" class="answer-area"></div>
+        <div class="quiz-foot">
+          <span class="note">Une fois validée, une réponse ne peut plus être modifiée.</span>
+          <button type="button" id="btnNext">Suivant</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fin -->
+    <section class="card hidden" id="viewDone">
+      <h1>Merci !</h1>
+      <p class="lead" style="margin:0">Vos réponses ont été enregistrées. Vous pouvez fermer cette page.</p>
+    </section>
+  </main>
+  <footer class="powered" aria-label="Powered by 3D TPMH">
+    <span>Powered by</span>
+    <img src="/img/logo-3dtpmh-56.png" alt="3D TPMH" width="62" height="28">
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

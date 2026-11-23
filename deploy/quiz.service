@@ -1,0 +1,30 @@
+# Service systemd de l'Application Quiz (Linux)
+# Installation : voir INSTALLATION.md, partie « Serveur Linux ».
+#   sudo cp deploy/quiz.service /etc/systemd/system/quiz.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now quiz
+[Unit]
+Description=Application Quiz
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=quiz
+Group=quiz
+WorkingDirectory=/opt/quiz-app
+ExecStart=/usr/bin/node /opt/quiz-app/server.js
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+# Autorise les ports 80 et 443 sans exécuter l'application en root
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+# Durcissement : l'application ne peut écrire que dans ses dossiers de données
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/quiz-app/data /opt/quiz-app/resultats
+
+[Install]
+WantedBy=multi-user.target

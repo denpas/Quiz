@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz — Zone admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Application <span>QUIZ</span> · Zone admin</div>
+    <div class="top-actions">
+      <span class="hdr-teacher hidden" id="hdrTeacher"></span>
+      <a class="btn secondary small hidden" href="/" id="toStudent" title="Vous serez déconnecté de la zone admin">Page étudiant</a>
+      <button class="ghost small hidden" id="btnPw" type="button">Mot de passe</button>
+      <button class="ghost small hidden" id="btnLogout" type="button">Se déconnecter</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="viewLogin" style="max-width:440px">
+      <h1>Zone admin</h1>
+      <p class="lead">Accès réservé aux enseignants. Votre compte est créé par le super administrateur.</p>
+      <div class="msg error hidden" id="loginErr"></div>
+      <form id="loginForm">
+        <label class="field">Identifiant
+          <input id="login" autocomplete="username" autocapitalize="off" spellcheck="false" required autofocus>
+        </label>
+        <label class="field">Mot de passe
+          <input type="password" id="pw" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Se connecter</button>
+      </form>
+    </section>
+
+    <section class="card wide hidden" id="viewAdmin">
+      <div class="student-link">
+        <div><b>Lien à donner aux étudiants</b><br><code id="studentUrl"></code></div>
+        <button type="button" class="secondary small" id="btnCopy">Copier le lien</button>
+      </div>
+      <p class="sub" id="studentUrlHint" style="margin:-8px 0 18px"></p>
+      <h1>Questionnaire</h1>
+      <div class="msg error hidden" id="upErr"></div>
+      <div class="msg ok hidden" id="upOk"></div>
+      <p id="qInfo" class="lead"></p>
+      <form id="upForm" class="toolbar">
+        <input type="file" id="upFile" accept=".xlsx" class="hidden">
+        <button type="button" id="btnPick">Téléchargement du questionnaire</button>
+        <a class="btn secondary hidden" id="dlQ" href="/api/admin/questionnaire/file">Télécharger le fichier actuel</a>
+        <button type="button" class="secondary" id="btnEdit">Editer le questionnaire</button>
+        <button type="button" class="ghost" id="btnPreview">Afficher / masquer les questions</button>
+      </form>
+      <label class="option" id="optShuffleRow">
+        <input type="checkbox" id="optShuffle">
+        <span><b>Proposer les questions dans un ordre aléatoire</b><br>
+        <span class="sub">Un ordre différent est tiré au sort pour chaque étudiant au lancement du quiz. Le fichier de résultats conserve l'ordre du questionnaire. Les quiz déjà commencés ne sont pas affectés.</span></span>
+      </label>
+      <div class="msg error hidden" id="optErr"></div>
+      <ol class="qlist hidden" id="qList"></ol>
+
+      <h2>Résultats</h2>
+      <div class="toolbar" style="margin-bottom:12px">
+        <a class="btn secondary small" href="/api/admin/results/synthese.xlsx">Exporter la synthèse (.xlsx)</a>
+        <button class="ghost small" id="btnRefresh" type="button">Actualiser</button>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Étudiant</th><th>Email</th><th>Début</th><th>Fin</th><th>Durée</th><th>Statut</th><th>Note</th><th>Fichier</th><th></th></tr></thead>
+          <tbody id="results"></tbody>
+        </table>
+      </div>
+      <div class="empty hidden" id="noResults">Aucune participation pour le moment.</div>
+    </section>
+
+    <!-- Éditeur de questionnaire -->
+    <section class="card wide hidden" id="viewEditor">
+      <div class="editor-head">
+        <div>
+          <h1>Editer le questionnaire</h1>
+          <p class="lead" style="margin:0">Les bonnes réponses cochées ici apparaîtront en <b>gras</b> dans le fichier Excel. Les quiz déjà commencés ne sont pas affectés.</p>
+        </div>
+      </div>
+      <div class="msg error hidden" id="edErr"></div>
+      <div id="edList"></div>
+      <button type="button" class="secondary" id="edAdd" style="margin-top:6px">+ Nouvelle question</button>
+      <div class="editor-bar">
+        <span class="note" id="edCount"></span>
+        <div class="toolbar">
+          <button type="button" class="ghost" id="edCancel">Annuler</button>
+          <button type="button" id="edSave">Enregistrer le questionnaire</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="powered" aria-label="Powered by 3D TPMH">
+    <span>Powered by</span>
+    <img src="/img/logo-3dtpmh-56.png" alt="3D TPMH" width="62" height="28">
+  </footer>
+
+  <div class="overlay hidden" id="pwModal" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <form class="modal" id="pwForm">
+      <h2 id="pwTitle">Changer mon mot de passe</h2>
+      <div class="msg error hidden" id="pwErr"></div>
+      <div class="msg ok hidden" id="pwOk"></div>
+      <label class="field">Mot de passe actuel<input type="password" id="pwCur" autocomplete="current-password"></label>
+      <label class="field">Nouveau mot de passe (8 caractères minimum)<input type="password" id="pwNew" autocomplete="new-password"></label>
+      <label class="field">Confirmation<input type="password" id="pwNew2" autocomplete="new-password"></label>
+      <div class="actions">
+        <button type="button" class="ghost" id="pwCancel">Fermer</button>
+        <button type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+  <!-- Correction des questions ouvertes -->
+  <div class="overlay hidden" id="corrModal" role="dialog" aria-modal="true" aria-labelledby="corrTitle">
+    <div class="modal corr-modal">
+      <div class="corr-head">
+        <div>
+          <h2 id="corrTitle">Correction</h2>
+          <p class="sub" id="corrSub" style="margin:0"></p>
+        </div>
+        <button type="button" class="ghost small" id="corrClose">Fermer</button>
+      </div>
+      <div class="msg error hidden" id="corrErr"></div>
+      <div id="corrList"></div>
+      <div class="corr-foot">
+        <span class="note" id="corrTotal"></span>
+        <button type="button" id="corrAll">Valider toutes les notes proposées</button>
+      </div>
+    </div>
+  </div>
+  <script src="/admin.js"></script>
+  <script src="/correction.js"></script>
+  <script src="/editor.js"></script>
+</body>
+</html>

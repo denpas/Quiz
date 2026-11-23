@@ -1,0 +1,23 @@
+{
+  "name": "quiz-app",
+  "version": "1.0.0",
+  "description": "Application web de quiz pour étudiants",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "selfsigned": "^2.4.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}

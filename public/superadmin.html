@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz — Super admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Application <span>QUIZ</span> · Super admin</div>
+    <div class="top-actions">
+      <button class="ghost small hidden" id="btnLogout" type="button">Se déconnecter</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="viewLogin" style="max-width:440px">
+      <h1>Super admin</h1>
+      <p class="lead">Gestion des comptes enseignants.</p>
+      <div class="msg error hidden" id="loginErr"></div>
+      <form id="loginForm">
+        <label class="field">Mot de passe
+          <input type="password" id="pw" autocomplete="current-password" required autofocus>
+        </label>
+        <button type="submit">Se connecter</button>
+      </form>
+    </section>
+
+    <section class="card wide hidden" id="viewSuper">
+      <h1>Enseignants</h1>
+      <p class="lead">Chaque enseignant se connecte à la zone admin (<code>/admin</code>) avec son identifiant et son mot de passe. Il a son propre questionnaire, ses résultats, et un lien étudiant <code>/q/identifiant</code>.</p>
+      <div class="msg ok hidden" id="listOk"></div>
+      <div class="msg error hidden" id="listErr"></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Enseignant</th><th>Identifiant</th><th>Créé le</th><th>Questionnaire</th><th>Participations</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="teachers"></tbody>
+        </table>
+      </div>
+      <div class="empty hidden" id="noTeachers">Aucun enseignant pour le moment : créez le premier compte ci-dessous.</div>
+
+      <h2>Créer un enseignant</h2>
+      <div class="msg error hidden" id="createErr"></div>
+      <form id="createForm" novalidate>
+        <div class="row2">
+          <label class="field">Prénom<input id="cPrenom" maxlength="80" required></label>
+          <label class="field">Nom<input id="cNom" maxlength="80" required></label>
+        </div>
+        <div class="row2">
+          <label class="field">Identifiant (login)
+            <input id="cLogin" maxlength="32" autocapitalize="off" spellcheck="false" required placeholder="ex. pdenicou">
+            <span class="sub">3 à 32 caractères : minuscules sans accent, chiffres, point, tiret. Apparaît dans le lien étudiant.</span>
+          </label>
+          <label class="field">Mot de passe (8 caractères minimum)
+            <span class="pw-row"><input id="cPassword" type="text" autocomplete="off" spellcheck="false" required>
+            <button type="button" class="ghost small" id="btnGen">Générer</button></span>
+            <span class="sub">Transmettez-le à l'enseignant ; il pourra le changer depuis sa zone admin.</span>
+          </label>
+        </div>
+        <button type="submit">Créer l'enseignant</button>
+      </form>
+
+      <h2>Correction des questions ouvertes par IA</h2>
+      <p class="lead" style="margin-bottom:14px">Avec une clé API Anthropic, Claude analyse le <b>sens</b> des réponses ouvertes (reformulations, synonymes, erreurs, hors-sujet) et propose une note détaillée, que l'enseignant valide. Sans clé, une analyse locale fondée sur le vocabulaire est utilisée, et ses notes sont à vérifier. La clé se crée sur <code>console.anthropic.com</code> ; l'utilisation de l'API est payante.</p>
+      <div class="msg hidden" id="aiState"></div>
+      <div class="msg error hidden" id="aiErr"></div>
+      <form id="aiForm" novalidate>
+        <div class="row2">
+          <label class="field">Clé API Anthropic
+            <input id="aiKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+            <span class="sub">Laisser vide pour conserver la clé actuelle.</span>
+          </label>
+          <label class="field">Modèle
+            <input id="aiModel" autocomplete="off" spellcheck="false" placeholder="claude-sonnet-5-5">
+          </label>
+        </div>
+        <div class="toolbar">
+          <button type="submit">Enregistrer</button>
+          <button type="button" class="secondary" id="aiTest">Tester la correction IA</button>
+          <button type="button" class="danger hidden" id="aiClear">Supprimer la clé</button>
+        </div>
+      </form>
+    </section>
+  </main>
+  <footer class="powered" aria-label="Powered by 3D TPMH">
+    <span>Powered by</span>
+    <img src="/img/logo-3dtpmh-56.png" alt="3D TPMH" width="62" height="28">
+  </footer>
+
+  <!-- Modification d'un enseignant -->
+  <div class="overlay hidden" id="editModal" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+    <form class="modal" id="editForm" novalidate>
+      <h2 id="edTitle">Modifier l'enseignant</h2>
+      <div class="msg error hidden" id="editErr"></div>
+      <div class="row2">
+        <label class="field">Prénom<input id="ePrenom" maxlength="80"></label>
+        <label class="field">Nom<input id="eNom" maxlength="80"></label>
+      </div>
+      <label class="field">Nouveau mot de passe <span class="sub">(laisser vide pour ne pas le changer)</span>
+        <span class="pw-row"><input id="ePassword" type="text" autocomplete="off" spellcheck="false">
+        <button type="button" class="ghost small" id="btnGen2">Générer</button></span>
+      </label>
+      <div class="actions">
+        <button type="button" class="ghost" id="editCancel">Annuler</button>
+        <button type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="/superadmin.js"></script>
+</body>
+</html>

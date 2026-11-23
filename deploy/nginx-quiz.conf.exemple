@@ -1,0 +1,22 @@
+# Exemple de configuration nginx (proxy HTTPS devant l'Application Quiz) — à adapter.
+# Dans le .env de l'application :  HTTPS=off   HOST=127.0.0.1   TRUST_PROXY=loopback   PORT=3000
+server {
+    listen 80;
+    server_name quiz.ecole.local;
+    return 308 https://$host$request_uri;
+}
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name quiz.ecole.local;
+    ssl_certificate     /etc/nginx/certs/quiz.pem;       # certificat + chaîne
+    ssl_certificate_key /etc/nginx/certs/quiz-cle.pem;
+    client_max_body_size 10m;                            # envoi des questionnaires .xlsx
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 90s;                          # correction IA des questions ouvertes
+    }
+}

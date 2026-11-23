@@ -1,0 +1,11 @@
+# Exemple de configuration Caddy (proxy HTTPS devant l'Application Quiz) — à adapter.
+# Dans le .env de l'application :  HTTPS=off   HOST=127.0.0.1   TRUST_PROXY=loopback   PORT=3000
+quiz.ecole.local {
+	# Certificat fourni par le service informatique :
+	tls /etc/caddy/certs/quiz.pem /etc/caddy/certs/quiz-cle.pem
+	# … ou certificat interne généré par Caddy (à déclarer de confiance sur les postes) :
+	# tls internal
+
+	reverse_proxy 127.0.0.1:3000
+	encode gzip
+}
