@@ -1,7 +1,8 @@
 node_modules/
-data/*
-!data/.gitkeep
-resultats/*
-!resultats/.gitkeep
+src/data/*
+!src/data/.gitkeep
+src/resultats/*
+!src/resultats/.gitkeep
 .env
+src/.env
 .DS_Store

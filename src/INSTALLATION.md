@@ -82,7 +82,7 @@ sudo chown root:quiz /opt/quiz-app/.env && sudo chmod 640 /opt/quiz-app/.env
 ### 2.5 Premier lancement (test)
 
 ```bash
-sudo -u quiz node /opt/quiz-app/server.js
+sudo -u quiz node /opt/quiz-app/src/server.js
 ```
 
 L'écran affiche les adresses et l'**empreinte SHA-256** du certificat (à noter, voir § 7). Ouvrir l'adresse « Étudiants » depuis un portable pour vérifier l'accès, puis arrêter avec `Ctrl+C`.
@@ -92,7 +92,7 @@ L'écran affiche les adresses et l'**empreinte SHA-256** du certificat (à noter
 ```bash
 which node                                # noter le chemin (souvent /usr/bin/node)
 sudo cp /opt/quiz-app/deploy/quiz.service /etc/systemd/system/quiz.service
-# si « which node » n'a pas affiché /usr/bin/node, corriger la ligne ExecStart :
+# si « which node » n'a pas affiché /usr/bin/node, corriger la ligne ExecStart (chemin du script : `src/server.js`) :
 sudo nano /etc/systemd/system/quiz.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now quiz          # démarre maintenant et à chaque redémarrage du serveur
@@ -142,7 +142,7 @@ Changer `SUPERADMIN_PASSWORD` (impératif), régler le mode HTTPS (§ 1), enregi
 ### 3.3 Premier lancement (test)
 
 ```powershell
-node server.js
+node src/server.js
 ```
 
 Si Windows demande d'autoriser Node.js sur le réseau, accepter pour les **réseaux privés / de domaine**. Noter l'empreinte SHA-256 affichée, tester depuis un portable, puis `Ctrl+C`.
@@ -161,7 +161,7 @@ New-NetFirewallRule -DisplayName "Application Quiz" -Direction Inbound -Protocol
 ```powershell
 cd C:\quiz-app\deploy
 $node = (Get-Command node).Source
-.\nssm.exe install Quiz $node "C:\quiz-app\server.js"
+.\nssm.exe install Quiz $node "C:\quiz-app\src\server.js"
 .\nssm.exe set Quiz AppDirectory C:\quiz-app
 .\nssm.exe set Quiz AppStdout C:\quiz-app\data\journal.log
 .\nssm.exe set Quiz AppStderr C:\quiz-app\data\journal.log

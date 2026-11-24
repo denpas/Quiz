@@ -33,8 +33,8 @@ const TRUST_PROXY = process.env.TRUST_PROXY || '';
 // Adresse d'écoute : 0.0.0.0 = accessible depuis le réseau ; 127.0.0.1 = seulement depuis le serveur (mode proxy)
 const HOST = process.env.HOST || '0.0.0.0';
 const SUPERADMIN_PASSWORD = process.env.SUPERADMIN_PASSWORD || 'MotDePasseEPSI2026!';
-const DATA_DIR = path.join(__dirname, 'data');
-const RESULTS_DIR = path.join(__dirname, 'resultats');
+const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, 'data'));
+const RESULTS_DIR = path.resolve(process.env.RESULTS_DIR || path.join(__dirname, 'resultats'));
 const TEACHERS_FILE = path.join(DATA_DIR, 'enseignants.json');
 const TDATA_DIR = path.join(DATA_DIR, 'enseignants');
 fs.mkdirSync(TDATA_DIR, { recursive: true });

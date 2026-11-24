@@ -1,19 +1,20 @@
 :root {
-  --bg: #f5f4f0;
+  --bg: #f3f6f8;
   --surface: #ffffff;
-  --ink: #1d1f24;
-  --muted: #646a73;
-  --line: #e2e0d9;
-  --accent: #23466b;
+  --ink: #000000;
+  --muted: #5c6670;
+  --line: #bfbfbf;
+  --accent: #004d7a;
+  --accent-2: #00abe7;
   --accent-ink: #ffffff;
-  --accent-soft: #e6edf5;
+  --accent-soft: #bfeaf9;
   --danger: #a3302a;
   --danger-soft: #fbeceb;
   --ok: #2c6e49;
   --ok-soft: #e7f3ec;
   --warn-soft: #fdf5e2;
   --radius: 10px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Tahoma, Verdana, Geneva, sans-serif;
   color: var(--ink);
 }
 * { box-sizing: border-box; }
@@ -25,7 +26,7 @@ header.top {
   padding: 14px 24px; background: var(--surface); border-bottom: 1px solid var(--line);
 }
 .brand { font-weight: 700; letter-spacing: .02em; font-size: 1.05rem; }
-.brand span { color: var(--accent); }
+.brand span { color: var(--accent-2); }
 .top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 16px; }
@@ -57,7 +58,7 @@ button, .btn {
 button:hover:not(:disabled), .btn:hover { filter: brightness(1.1); }
 button:disabled { opacity: .45; cursor: not-allowed; }
 button.secondary, .btn.secondary { background: var(--surface); color: var(--accent); }
-button.ghost { background: transparent; border-color: var(--line); color: var(--ink); font-weight: 500; padding: 8px 14px; }
+button.ghost, .btn.ghost { background: transparent; border-color: var(--line); color: var(--ink); font-weight: 500; padding: 8px 14px; }
 button.small, .btn.small { padding: 6px 12px; font-size: .85rem; }
 button.danger { background: var(--surface); color: var(--danger); border-color: var(--danger); }
 

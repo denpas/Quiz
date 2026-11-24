@@ -1,0 +1,9 @@
+node_modules
+src/data
+src/resultats
+src/deploy
+src/.env
+src/*.md
+src/*.docx
+src/*.xlsx
+.git

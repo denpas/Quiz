@@ -1,0 +1,20 @@
+services:
+  quiz:
+    build: .
+    container_name: quiz
+    restart: unless-stopped
+    ports:
+      - "3050:3050"
+    environment:
+      PORT: "3050"
+      HOST: "0.0.0.0"
+      HTTPS: "off"          # HTTP en interne ; HTTPS externe (https://34mydil.myqnapcloud.com:3050) assuré en amont par le NAS
+      TRUST_PROXY: "1"
+      DATA_DIR: /app/data
+      RESULTS_DIR: /app/resultats
+      TZ: Europe/Paris
+      SUPERADMIN_PASSWORD: "${SUPERADMIN_PASSWORD:-MotDePasseEPSI2026!}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+    volumes:
+      - ./src/data:/app/data
+      - ./src/resultats:/app/resultats
